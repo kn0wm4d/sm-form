@@ -22,7 +22,11 @@ def send_email(to_email, subject, html_content):
         bool: True if email sent successfully, False otherwise
     """
     smtp_server = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
-    smtp_port = int(os.environ.get('SMTP_PORT', '587'))
+    try:
+        smtp_port = int(os.environ.get('SMTP_PORT', '587'))
+    except (ValueError, TypeError):
+        print("Warning: Invalid SMTP_PORT value, using default 587")
+        smtp_port = 587
     smtp_username = os.environ.get('SMTP_USERNAME')
     smtp_password = os.environ.get('SMTP_PASSWORD')
     smtp_from_email = os.environ.get('SMTP_FROM_EMAIL', smtp_username)
@@ -94,7 +98,7 @@ def format_form_data(form_data):
             # Format arrays nicely
             if isinstance(value, list):
                 if value:  # Only show if list has items
-                    value = ', '.join(value)
+                    value = ', '.join(str(item) for item in value)
                 else:
                     continue  # Skip empty lists
             

@@ -349,7 +349,9 @@ createApp({
     console.log("Submitting form..", formData);
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      // Detect backend URL based on environment
+      const isDevelopment = ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
+      const backendUrl = isDevelopment
         ? 'http://localhost:5000/submit'
         : '/api/submit'; // Use Vercel API endpoint in production
       

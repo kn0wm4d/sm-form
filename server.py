@@ -18,7 +18,11 @@ CORS(app)
 
 # SMTP Configuration from environment variables
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
-SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
+try:
+    SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
+except (ValueError, TypeError):
+    print("Warning: Invalid SMTP_PORT value, using default 587")
+    SMTP_PORT = 587
 SMTP_USERNAME = os.getenv('SMTP_USERNAME')
 SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
 SMTP_FROM_EMAIL = os.getenv('SMTP_FROM_EMAIL', SMTP_USERNAME)
@@ -104,7 +108,7 @@ def format_form_data(form_data):
             # Format arrays nicely
             if isinstance(value, list):
                 if value:  # Only show if list has items
-                    value = ', '.join(value)
+                    value = ', '.join(str(item) for item in value)
                 else:
                     continue  # Skip empty lists
             
