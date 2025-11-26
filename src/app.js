@@ -56,7 +56,6 @@ createApp({
   submitted: false,
   submitSuccess: false,
   submitError: false,
-  formAccessKey: "YOUR_ACCESS_KEY_HERE",
   invalids: {},
   fields: {
     email: {
@@ -345,38 +344,37 @@ createApp({
     if (this.isInvalid) return;
     this.submitted = true;
     const formData = this.fields;
-    const object = {
-      access_key: this.formAccessKey,
-      subject: "New submission from multistep form",
-    };
-    for (const key in formData) {
-      object[key] = formData[key].value;
-    }
-    console.log("Submitting form..", object);
+    
+    // Send the entire fields object to the backend
+    console.log("Submitting form..", formData);
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(object),
-    });
-    const result = await response.json();
+    try {
+      const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000/submit'
+        : '/api/submit'; // Use Vercel API endpoint in production
+      
+      const response = await fetch(backendUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json();
 
-    if (result.success) {
-      console.log(result);
-      // submit on valid form
-      this.submitSuccess = true;
-    } else {
-      console.log(result);
+      if (result.success) {
+        console.log(result);
+        // submit on valid form
+        this.submitSuccess = true;
+      } else {
+        console.log(result);
+        this.submitError = true;
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
       this.submitError = true;
     }
-
-    // this will also work.
-    // for (let [key, value] of Object.entries(formData)) {
-    //   console.log(key, value.value);
-    // }
   },
 })
   // .directive("transition", transitionDirective)
