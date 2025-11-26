@@ -152,8 +152,8 @@ After deployment, configure the environment variables in your Vercel dashboard:
 ### Architecture
 
 - **Frontend**: Static Vue.js application served from `/dist`
-- **Backend**: Python serverless function in `/api/submit.py`
-- **Email**: SMTP via standard Python `smtplib`
+- **Backend**: Node.js serverless function in `/api/submit.js`
+- **Email**: SMTP via Nodemailer library
 - **Deployment**: Vercel with automatic CI/CD
 
 The serverless function will handle form submissions and send emails without needing a dedicated server!

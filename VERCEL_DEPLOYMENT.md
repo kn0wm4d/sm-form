@@ -2,6 +2,8 @@
 
 This guide will help you deploy the Workshop Registration Form to Vercel.
 
+> **Important Update (2024)**: This project now uses **Node.js serverless functions** instead of Python. This ensures compatibility with Vercel's free tier, which no longer supports the deprecated `@vercel/python` runtime. The functionality remains the same, but the backend has been migrated to Node.js with the Nodemailer library.
+
 ## Prerequisites
 
 1. A [Vercel account](https://vercel.com/signup) (free tier is sufficient)
@@ -37,13 +39,15 @@ Before deploying, add your SMTP environment variables:
 
 | Variable Name | Example Value | Description |
 |--------------|---------------|-------------|
-| `SMTP_SERVER` | `smtp.gmail.com` | Your SMTP server address |
-| `SMTP_PORT` | `587` | SMTP port (usually 587 for TLS) |
-| `SMTP_USERNAME` | `your-email@gmail.com` | Your email address |
-| `SMTP_PASSWORD` | `xxxx xxxx xxxx xxxx` | Your email password or app password |
-| `SMTP_FROM_EMAIL` | `your-email@gmail.com` | Email address to send from |
-| `SMTP_FROM_NAME` | `Workshop Registration` | Display name for emails |
-| `EMAIL_SUBMISSIONS` | `admin@example.com` | Admin email to receive submissions |
+| `SMTP_SERVER` | `smtp.gmail.com` | Your SMTP server address (defaults to smtp.gmail.com if not set) |
+| `SMTP_PORT` | `587` | SMTP port - use 587 for STARTTLS or 465 for SSL (defaults to 587) |
+| `SMTP_USERNAME` | `your-email@gmail.com` | Your email address (required) |
+| `SMTP_PASSWORD` | `xxxx xxxx xxxx xxxx` | Your email password or app password (required) |
+| `SMTP_FROM_EMAIL` | `your-email@gmail.com` | Email address to send from (defaults to SMTP_USERNAME) |
+| `SMTP_FROM_NAME` | `Workshop Registration` | Display name for emails (defaults to 'Workshop Registration') |
+| `EMAIL_SUBMISSIONS` | `admin@example.com` | Admin email to receive submissions (optional) |
+
+**Note about defaults**: Only `SMTP_USERNAME` and `SMTP_PASSWORD` are required. Other variables have sensible defaults suitable for Gmail. For other SMTP providers, you should explicitly set all variables.
 
 **Important for Gmail Users:**
 - You must use an [App Password](https://myaccount.google.com/apppasswords), not your regular password
@@ -102,7 +106,7 @@ To update environment variables after deployment:
 ### Build fails
 
 1. **Check build logs**: Look for errors in the Vercel deployment logs
-2. **Verify package.json**: Ensure all dependencies are listed
+2. **Verify package.json**: Ensure all dependencies are listed (including nodemailer)
 3. **Test locally**: Run `npm run build` locally to ensure it works
 
 ### Form submission fails
@@ -110,6 +114,15 @@ To update environment variables after deployment:
 1. **Check browser console**: Look for JavaScript errors
 2. **Check network tab**: Verify the request to `/api/submit` is being made
 3. **Test API endpoint**: Visit `https://your-site.vercel.app/api/submit` (should show method not allowed for GET)
+
+### API 404 Error
+
+If you're getting a 404 error for `/api/submit`:
+
+1. **Ensure you're using the latest version**: The project has been updated to use Node.js serverless functions (Vercel free tier compatible)
+2. **Verify deployment**: Check that `api/submit.js` was deployed correctly in your Vercel dashboard
+3. **Check build logs**: Make sure there are no errors during the build process
+4. **Redeploy**: Try redeploying your project from the Vercel dashboard
 
 ## Monitoring
 
