@@ -114,10 +114,11 @@ async function sendEmail(toEmail, subject, htmlContent) {
 
   try {
     // Create transporter
+    // Use secure connection for port 465, otherwise use STARTTLS
     const transporter = nodemailer.createTransport({
       host: smtpServer,
       port: smtpPort,
-      secure: false, // true for 465, false for other ports
+      secure: smtpPort === 465, // true for 465, false for other ports (587 uses STARTTLS)
       auth: {
         user: smtpUsername,
         pass: smtpPassword,
