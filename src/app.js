@@ -59,20 +59,8 @@ createApp({
   formAccessKey: "YOUR_ACCESS_KEY_HERE",
   invalids: {},
   fields: {
-    name: {
-      label: "What's your full name?",
-      helptext: "Howdy Stranger, Let's get acquainted. ",
-      value: "",
-      validations: [
-        {
-          message: "Name is a required field",
-          test: (value) => value,
-        },
-      ],
-    },
     email: {
       label: "Email",
-      helptext: "Thank you, now provide your email to contact you. ",
       value: "",
       validations: [
         {
@@ -85,89 +73,202 @@ createApp({
         },
       ],
     },
-    referral: {
-      label: "How did you find us?",
+    name: {
+      label: "Name",
+      value: "",
+      validations: [
+        {
+          message: "Name is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    gender: {
+      label: "Gender / النوع",
       value: "",
       type: "select",
-      name: "referral",
+      name: "gender",
       options: [
-        "Google",
-        "Social Media",
-        "Website or Blog",
-        "Friends",
-        "Other",
+        "Male / ذكر",
+        "Female / أنثى",
+      ],
+      validations: [
+        {
+          message: "Gender is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    age: {
+      label: "Age / العمر",
+      value: "",
+      type: "select",
+      name: "age",
+      options: [
+        "18-25",
+        "25-30",
+        "30+",
+      ],
+      validations: [
+        {
+          message: "Age is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    phone: {
+      label: "Phone Number / رقم الهاتف",
+      value: "",
+      validations: [
+        {
+          message: "Phone Number is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    whatsapp: {
+      label: "WhatsApp Number / رقم الواتساب",
+      value: "",
+      validations: [
+        {
+          message: "WhatsApp Number is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    residency: {
+      label: "Residency / مكان الإقامة",
+      value: "",
+      type: "select",
+      name: "residency",
+      options: [
+        "Mokattam / المقطم",
+        "Maadi / المعادي",
+        "Nasr City / مدينة نصر",
+        "Tagamo (1st / 3rd / 5th) / التجمع (الأول / الثالث / الخامس)",
+        "Misr al-Jadida / مصر الجديدة",
+        "Faisal / فيصل",
+        "Dokki / الدقي",
+        "Mohandiseen / المهندسين",
+        "Hadayek El Ahram / حدائق الأهرام",
+        "6th October / السادس من أكتوبر",
+        "Helwan / حلوان",
+        "Madinaty / مدينتي",
+        "Shorooq / الشروق",
+        "Obour / العبور",
+        "Rehab / الرحاب",
+        "Badr City / بدر",
+        "Shubra / شبرا",
+      ],
+      validations: [
+        {
+          message: "Residency is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    career: {
+      label: "Where are you currently in your career? / أين أنت حاليا في حياتك المهنية؟",
+      value: "",
+      type: "select",
+      name: "career",
+      options: [
+        "Student / طالب",
+        "Fresh Graduate / خريج حديثا",
+        "Career Shifting / تغيير مسار مهني",
+      ],
+      validations: [
+        {
+          message: "Career status is a required field",
+          test: (value) => value,
+        },
+      ],
+    },
+    workshops1: {
+      label: "What workshops do you want to attend? (10 AM – 12 PM)",
+      value: [],
+      type: "multiselect",
+      name: "workshops1",
+      options: [
+        "كيف تستعد لـ OET",
+        "Medical Research and Scientific Writing",
+        "مهارات الجراح الموهوب",
+        "Clinical Skills",
       ],
       optional: true,
       validations: [],
     },
-    address: {
-      label: "Address",
-      value: "",
-      validations: [
-        {
-          message: "Address is a required field",
-          test: (value) => value,
-        },
+    workshops2: {
+      label: "What workshops do you want to attend? (12 PM – 2 PM)",
+      value: [],
+      type: "multiselect",
+      name: "workshops2",
+      options: [
+        "ICDL",
+        "الإسعافات الأولية",
+        "اتخرجت يا دكتور وبعدين؟",
+        "أسرار السيرة الذاتية",
       ],
+      optional: true,
+      validations: [],
     },
-    city: {
-      label: "City",
-      value: "",
-      validations: [
-        {
-          message: "City is a required field",
-          test: (value) => value,
-        },
+    workshops3: {
+      label: "What workshops do you want to attend? (2 PM – 4 PM)",
+      value: [],
+      type: "multiselect",
+      name: "workshops3",
+      options: [
+        "الإلقاء والصوت",
+        "كتابة المحتوى",
+        "How to Live a Healthy Lifestyle",
+        "بتعرف شنو عن ريادة الأعمال؟",
       ],
+      optional: true,
+      validations: [],
     },
-    state: {
-      label: "State",
-      value: "",
-      validations: [
-        {
-          message: "State is a required field",
-          test: (value) => value,
-        },
+    workshops4: {
+      label: "What workshops do you want to attend? (4 PM – 6 PM)",
+      value: [],
+      type: "multiselect",
+      name: "workshops4",
+      options: [
+        "مهارات البيع الاحترافي",
+        "Communication Skills",
+        "Freelance",
+        "Graphic Design",
       ],
+      optional: true,
+      validations: [],
     },
-    zip: {
-      label: "Zip",
-      value: "",
-      validations: [
-        {
-          message: "Zip is a required field",
-          test: (value) => value,
-        },
-        {
-          message: "Zip must be 5 digits",
-          test: (value) => !isNaN(value) && value.length === 5,
-        },
+    workshops5: {
+      label: "What workshops do you want to attend? (6 PM – 8 PM)",
+      value: [],
+      type: "multiselect",
+      name: "workshops5",
+      options: [
+        "كيف تبقى صانع محتوى",
+        "Digital Marketing",
+        "افكارك مرآة افعالك",
+        "التحدث امام الجمهور",
       ],
-    },
-    donationAmount: {
-      label: "Donation Amount",
-      value: "",
-      validations: [
-        {
-          message: "Donation Amount is a required field",
-          test: (value) => value,
-        },
-        {
-          message: "Donation Amount must be a valid number",
-          test: (value) => !isNaN(value),
-        },
-      ],
+      optional: true,
+      validations: [],
     },
   },
   steps: [
-    ["name"],
     ["email"],
-    ["address"],
-    ["city"],
-    ["state"],
-    ["zip"],
-    ["referral"],
-    ["donationAmount"],
+    ["name"],
+    ["gender"],
+    ["age"],
+    ["phone"],
+    ["whatsapp"],
+    ["residency"],
+    ["career"],
+    ["workshops1"],
+    ["workshops2"],
+    ["workshops3"],
+    ["workshops4"],
+    ["workshops5"],
   ],
 
   // Getters
