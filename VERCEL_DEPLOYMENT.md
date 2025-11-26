@@ -2,6 +2,8 @@
 
 This guide will help you deploy the Workshop Registration Form to Vercel.
 
+> **Important Update (2024)**: This project now uses **Node.js serverless functions** instead of Python. This ensures compatibility with Vercel's free tier, which no longer supports the deprecated `@vercel/python` runtime. The functionality remains the same, but the backend has been migrated to Node.js with the Nodemailer library.
+
 ## Prerequisites
 
 1. A [Vercel account](https://vercel.com/signup) (free tier is sufficient)
@@ -102,7 +104,7 @@ To update environment variables after deployment:
 ### Build fails
 
 1. **Check build logs**: Look for errors in the Vercel deployment logs
-2. **Verify package.json**: Ensure all dependencies are listed
+2. **Verify package.json**: Ensure all dependencies are listed (including nodemailer)
 3. **Test locally**: Run `npm run build` locally to ensure it works
 
 ### Form submission fails
@@ -110,6 +112,15 @@ To update environment variables after deployment:
 1. **Check browser console**: Look for JavaScript errors
 2. **Check network tab**: Verify the request to `/api/submit` is being made
 3. **Test API endpoint**: Visit `https://your-site.vercel.app/api/submit` (should show method not allowed for GET)
+
+### API 404 Error
+
+If you're getting a 404 error for `/api/submit`:
+
+1. **Ensure you're using the latest version**: The project has been updated to use Node.js serverless functions (Vercel free tier compatible)
+2. **Verify deployment**: Check that `api/submit.js` was deployed correctly in your Vercel dashboard
+3. **Check build logs**: Make sure there are no errors during the build process
+4. **Redeploy**: Try redeploying your project from the Vercel dashboard
 
 ## Monitoring
 
