@@ -1,13 +1,37 @@
 /**
  * Vercel serverless function for handling form submissions and sending emails via SMTP.
- * Node.js version (compatible with Vercel free tier)
+ * TypeScript version for Vercel deployment.
  */
-const nodemailer = require('nodemailer');
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import nodemailer from 'nodemailer';
+
+interface FormFieldData {
+  label?: string;
+  value: string | string[];
+}
+
+interface FormData {
+  [key: string]: FormFieldData;
+}
+
+/**
+ * Escape HTML special characters to prevent XSS attacks
+ */
+function escapeHtml(text: string): string {
+  const map: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
 
 /**
  * Format form data into HTML for email.
  */
-function formatFormData(formData) {
+function formatFormData(formData: FormData): string {
   let html = `
     <html>
     <head>
@@ -42,10 +66,14 @@ function formatFormData(formData) {
         }
       }
 
+      // Escape HTML to prevent XSS
+      const escapedLabel = escapeHtml(label);
+      const escapedValue = escapeHtml(value);
+
       html += `
             <div class="field">
-                <div class="field-label">${label}</div>
-                <div class="field-value">${value}</div>
+                <div class="field-label">${escapedLabel}</div>
+                <div class="field-value">${escapedValue}</div>
             </div>
       `;
     }
@@ -66,7 +94,8 @@ function formatFormData(formData) {
 /**
  * Format confirmation email for the user (without submission details).
  */
-function formatConfirmationEmail(userName) {
+function formatConfirmationEmail(userName: string): string {
+  const escapedUserName = escapeHtml(userName);
   return `
     <html>
     <head>
@@ -82,7 +111,7 @@ function formatConfirmationEmail(userName) {
         <div class="container">
             <h2>Workshop Registration Confirmation</h2>
             <div class="message">
-                <p>Dear ${userName},</p>
+                <p>Dear ${escapedUserName},</p>
                 <p>Thank you for registering for our workshops! We have received your registration successfully.</p>
                 <p>We will review your registration and get back to you shortly with further details about the workshops you selected.</p>
             </div>
@@ -99,7 +128,7 @@ function formatConfirmationEmail(userName) {
 /**
  * Send an email using SMTP with the configured settings.
  */
-async function sendEmail(toEmail, subject, htmlContent) {
+async function sendEmail(toEmail: string, subject: string, htmlContent: string): Promise<boolean> {
   const smtpServer = process.env.SMTP_SERVER || 'smtp.gmail.com';
   const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
   const smtpUsername = process.env.SMTP_USERNAME;
@@ -136,7 +165,7 @@ async function sendEmail(toEmail, subject, htmlContent) {
     console.log(`Email sent successfully to ${toEmail}`);
     return true;
   } catch (error) {
-    console.error(`Failed to send email: ${error.message}`);
+    console.error(`Failed to send email: ${(error as Error).message}`);
     return false;
   }
 }
@@ -144,7 +173,7 @@ async function sendEmail(toEmail, subject, htmlContent) {
 /**
  * Vercel serverless function handler
  */
-module.exports = async (req, res) => {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -163,7 +192,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const data = req.body;
+    const data = req.body as FormData;
 
     if (!data) {
       res.status(400).json({ success: false, message: 'No data received' });
@@ -173,13 +202,13 @@ module.exports = async (req, res) => {
     // Extract email from form data
     const recipientEmail = data.email?.value;
 
-    if (!recipientEmail) {
+    if (!recipientEmail || Array.isArray(recipientEmail)) {
       res.status(400).json({ success: false, message: 'Email is required' });
       return;
     }
 
     // Get user name for personalized emails
-    const userName = data.name?.value || 'Participant';
+    const userName = (Array.isArray(data.name?.value) ? data.name?.value[0] : data.name?.value) || 'Participant';
 
     // Send confirmation email to user (without details)
     const confirmationSubject = `Workshop Registration Confirmation - ${userName}`;
@@ -212,10 +241,10 @@ module.exports = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(`Error processing form submission: ${error.message}`);
+    console.error(`Error processing form submission: ${(error as Error).message}`);
     res.status(500).json({
       success: false,
-      message: `Server error: ${error.message}`,
+      message: `Server error: ${(error as Error).message}`,
     });
   }
-};
+}

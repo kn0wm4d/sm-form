@@ -22,12 +22,15 @@ This guide will help you deploy the Workshop Registration Form to Vercel.
 
 ### 2. Configure Project Settings
 
-Vercel will automatically detect the configuration from `vercel.json`. You don't need to change any build settings.
+Vercel will automatically detect the configuration from `vercel.json`. The simplified configuration ensures:
+- Static files are served from the `dist` directory
+- API routes in `/api` are automatically handled as serverless functions
+- TypeScript files are automatically compiled by Vercel
 
 Default settings should be:
 - **Framework Preset**: Other
-- **Build Command**: `npm run build` (auto-detected)
-- **Output Directory**: `dist` (auto-detected)
+- **Build Command**: `npm run build` (configured in vercel.json)
+- **Output Directory**: `dist` (configured in vercel.json)
 - **Install Command**: `npm install` (auto-detected)
 
 ### 3. Add Environment Variables
@@ -119,10 +122,11 @@ To update environment variables after deployment:
 
 If you're getting a 404 error for `/api/submit`:
 
-1. **Ensure you're using the latest version**: The project has been updated to use Node.js serverless functions (Vercel free tier compatible)
-2. **Verify deployment**: Check that `api/submit.js` was deployed correctly in your Vercel dashboard
+1. **Ensure you're using the latest version**: The project now uses TypeScript serverless functions with simplified Vercel configuration
+2. **Verify the API file exists**: Check that `api/submit.ts` is present in your repository
 3. **Check build logs**: Make sure there are no errors during the build process
-4. **Redeploy**: Try redeploying your project from the Vercel dashboard
+4. **Verify configuration**: Ensure `vercel.json` is using the simplified configuration (only `buildCommand` and `outputDirectory`)
+5. **Redeploy**: Try redeploying your project from the Vercel dashboard
 
 ## Monitoring
 
