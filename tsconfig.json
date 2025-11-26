@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "rootDir": "."
+    "rootDir": "./api"
   },
   "include": ["api/**/*"],
   "exclude": ["node_modules", "dist"]
