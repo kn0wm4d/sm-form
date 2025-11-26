@@ -185,7 +185,7 @@ createApp({
       ],
     },
     workshops1: {
-      label: "What workshops do you want to assist to? (10 AM – 12 PM)",
+      label: "What workshops do you want to attend? (10 AM – 12 PM)",
       value: [],
       type: "multiselect",
       name: "workshops1",
@@ -199,7 +199,7 @@ createApp({
       validations: [],
     },
     workshops2: {
-      label: "What workshops do you want to assist to? (12 PM – 2 PM)",
+      label: "What workshops do you want to attend? (12 PM – 2 PM)",
       value: [],
       type: "multiselect",
       name: "workshops2",
@@ -213,7 +213,7 @@ createApp({
       validations: [],
     },
     workshops3: {
-      label: "What workshops do you want to assist to? (2 PM – 4 PM)",
+      label: "What workshops do you want to attend? (2 PM – 4 PM)",
       value: [],
       type: "multiselect",
       name: "workshops3",
@@ -227,7 +227,7 @@ createApp({
       validations: [],
     },
     workshops4: {
-      label: "What workshops do you want to assist to? (4 PM – 6 PM)",
+      label: "What workshops do you want to attend? (4 PM – 6 PM)",
       value: [],
       type: "multiselect",
       name: "workshops4",
@@ -241,7 +241,7 @@ createApp({
       validations: [],
     },
     workshops5: {
-      label: "What workshops do you want to assist to? (6 PM – 8 PM)",
+      label: "What workshops do you want to attend? (6 PM – 8 PM)",
       value: [],
       type: "multiselect",
       name: "workshops5",
